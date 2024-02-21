@@ -36,7 +36,7 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: c-cpp
-        db-location: '${{ github.runner_temp }}/my_location'
+        db-location: '/home/runner/work/_temp/codeql_databases/cpp2'
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
