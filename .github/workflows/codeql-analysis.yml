@@ -40,6 +40,9 @@ jobs:
     - name: Autobuild (create cache)
       uses: github/codeql-action/autobuild@v2
 
+    - name: Delete the database
+      run: rm -rf /home/runner/work/_temp/codeql_databases
+
     # - name: Perform CodeQL Analysis
     #  uses: github/codeql-action/analyze@v2
     # Initializes the CodeQL tools for scanning.
