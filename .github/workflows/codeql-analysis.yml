@@ -26,22 +26,32 @@ jobs:
       security-events: write
 
     steps:
-    - name: Checkout repository
+    - name: Checkout first revision
       uses: actions/checkout@v3
+      with:
+        ref: 3780b41dd070436f3f55327b0a88f27a52e2dfa8
 
-    # Initializes the CodeQL tools for scanning.
+        # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL (run 1)
       uses: github/codeql-action/init@v2
       with:
         languages: c-cpp
+        db-location: '${{ github.runner_temp }}/my_location'
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild (create cache)
       uses: github/codeql-action/autobuild@v2
+      # Set the database folder to the default location
 
-    - name: Delete the database
-      run: rm -rf /home/runner/work/_temp/codeql_databases
+    #- name: Delete the database
+    #  run: rm -rf /home/runner/work/_temp/codeql_databases
+
+    - name: Checkout second revision
+      uses: actions/checkout@v3
+      with:
+        ref: 0457de21cffb298c22b629e538036bfeb96130b7
+
 
     # - name: Perform CodeQL Analysis
     #  uses: github/codeql-action/analyze@v2
@@ -51,5 +61,7 @@ jobs:
       with:
         languages: c-cpp
 
-    - name: Autobuild (create cache)
+    - name: Autobuild (read cache)
       uses: github/codeql-action/autobuild@v2
+
+    # TODO: Run the queries
