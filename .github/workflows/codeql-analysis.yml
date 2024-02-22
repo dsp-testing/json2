@@ -71,7 +71,9 @@ jobs:
     - name: Checkout second revision
       uses: actions/checkout@v3
       with:
-        ref: 0457de21cffb298c22b629e538036bfeb96130b7
+        # ref: 0457de21cffb298c22b629e538036bfeb96130b7
+        # This is the initial ref: 3780b41dd070436f3f55327b0a88f27a52e2dfa8
+        ref: 3780b41dd070436f3f55327b0a88f27a52e2dfa8
 
     # - name: Perform CodeQL Analysis
     #  uses: github/codeql-action/analyze@v2
