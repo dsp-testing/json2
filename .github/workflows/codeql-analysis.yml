@@ -37,6 +37,7 @@ jobs:
       with:
         languages: c-cpp
         db-location: '/home/runner/work/_temp/codeql_databases1/'
+        debug: true
 
     #- name: Set env vars again
     #  run: |
@@ -82,6 +83,7 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: c-cpp
+        debug: true
   
     # - name: Set env vars for read
     #  run: |
