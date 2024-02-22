@@ -87,6 +87,18 @@ jobs:
       with:
         languages: c-cpp
 
+    - name: Set env vars
+      run: |
+        export CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true
+        export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false
+        export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache
+  
+    - name: Set env vars for read
+      run: |
+        echo "CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
+        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
+        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
+  
     - name: Build (read cache)
       env:
         CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE: true
