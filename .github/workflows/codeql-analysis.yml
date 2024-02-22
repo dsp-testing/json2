@@ -38,23 +38,17 @@ jobs:
         languages: c-cpp
         db-location: '/home/runner/work/_temp/codeql_databases1/'
 
-    - name: Set env vars
-      run: |
-        export AACODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true
-        export AACODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true
-        export AACODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache
-
-    - name: Set env vars again
-      run: |
-        echo "BBCODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
-        echo "BBCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true" >> $GITHUB_ENV
-        echo "BBCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
+    #- name: Set env vars again
+    #  run: |
+    #    echo "BBCODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
+    #    echo "BBCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true" >> $GITHUB_ENV
+    #    echo "BBCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
 
     - name: Build (create trap cache)
       env:
         CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE: true
         CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE: true
-        # CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR: /home/runner/work/_temp/cpp_trap_cache  # Maybe not needed
+        CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR: /home/runner/work/_temp/cpp_trap_cache
       run: |
         echo "Here are the trap cache variables:"
         echo $CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE
@@ -86,23 +80,18 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: c-cpp
-
-    - name: Set env vars
-      run: |
-        export XXCODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true
-        export XXCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false
-        export XXCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache
   
-    - name: Set env vars for read
-      run: |
-        echo "YYCODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
-        echo "YYCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
-        echo "YYCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
+    # - name: Set env vars for read
+    #  run: |
+    #    echo "YYCODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
+    #    echo "YYCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
+    #    echo "YYCODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
   
     - name: Build (read cache)
       env:
         CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE: true
         CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE: false
+        CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR: /home/runner/work/_temp/cpp_trap_cache
       run: |
         echo "Here are the trap cache variables:"
         echo $CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE
