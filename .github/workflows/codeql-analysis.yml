@@ -38,19 +38,24 @@ jobs:
         languages: c-cpp
         db-location: '/home/runner/work/_temp/codeql_databases1/'
 
-    - name: Set environment variables
+    - name: Build (create trap cache)
       run: |
         export CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true
         export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true
         export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache
+        cmake tmp
+        cd tmp
+        cmake ..
+        make
+
       # echo "CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
       # echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true" >> $GITHUB_ENV
       # echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild (create cache)
-      uses: github/codeql-action/autobuild@v2
+    # - name: Autobuild (create cache)
+    #   uses: github/codeql-action/autobuild@v2
       # Set the database folder to the default location
 
     #- name: Delete the database
@@ -61,7 +66,6 @@ jobs:
       with:
         ref: 0457de21cffb298c22b629e538036bfeb96130b7
 
-
     # - name: Perform CodeQL Analysis
     #  uses: github/codeql-action/analyze@v2
     # Initializes the CodeQL tools for scanning.
@@ -70,12 +74,20 @@ jobs:
       with:
         languages: c-cpp
 
-    - name: Set environment variables
+    - name: Set environment variables & run
       run: |
         export CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE_WRITE=false
+        export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true
+        export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache
+        cmake tmp
+        cd tmp
+        cmake ..
+        make
       # echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
 
-    - name: Autobuild (read cache)
-      uses: github/codeql-action/autobuild@v2
+    # - name: Autobuild (read cache)
+    #  uses: github/codeql-action/autobuild@v2
 
     # TODO: Run the queries
+    # - name: Perform CodeQL Analysis
+    #  uses: github/codeql-action/analyze@v2
