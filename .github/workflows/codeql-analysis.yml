@@ -110,5 +110,5 @@ jobs:
     #  uses: github/codeql-action/autobuild@v2
 
     # TODO: Run the queries
-    # - name: Perform CodeQL Analysis
-    #  uses: github/codeql-action/analyze@v2
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
