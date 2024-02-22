@@ -40,9 +40,12 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
-        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true" >> $GITHUB_ENV
-        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
+        export CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true
+        export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true
+        export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache
+      # echo "CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
+      # echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true" >> $GITHUB_ENV
+      # echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
@@ -69,7 +72,8 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
+        export CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE_WRITE=false
+      # echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
 
     - name: Autobuild (read cache)
       uses: github/codeql-action/autobuild@v2
