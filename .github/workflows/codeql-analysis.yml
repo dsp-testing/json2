@@ -79,7 +79,7 @@ jobs:
         export CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE_WRITE=false
         export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true
         export CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache
-        cmake tmp
+        mkdir tmp
         cd tmp
         cmake ..
         make
