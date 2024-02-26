@@ -49,8 +49,6 @@ jobs:
 
     - name: Build and populate the cache
       env:
-        CODEQL_CPP_TRAP_CACHING: true
-        CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE: true
         CODEQL_EXTRACTOR_CPP_TRAP_CACHING: true
         CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE: true
         CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR: /home/runner/work/_temp/cpp_trap_cache
@@ -72,8 +70,6 @@ jobs:
 
     - name: Build and use the cache
       env:
-        CODEQL_CPP_TRAP_CACHING: true
-        CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE: true
         CODEQL_EXTRACTOR_CPP_TRAP_CACHING: true
         CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE: false
         CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR: /home/runner/work/_temp/cpp_trap_cache
