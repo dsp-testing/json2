@@ -28,11 +28,13 @@ jobs:
     steps:
     - name: Checkout first revision
       uses: actions/checkout@v3
+      # with:
+      #  ref: 321ea883b7190d4e85cae5512a12e5eaa8f8731f
 
     # This is needed for the "regular" CodeQL build
     - name: Set env vars
       run: |
-        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
+        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true" >> $GITHUB_ENV
         echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
         echo "CODEQL_EXTRACTOR_CPP_TRAP_CACHING=true" >> $GITHUB_ENV
         echo "CODEQL_CPP_TRAP_CACHING=true" >> $GITHUB_ENV
@@ -66,22 +68,30 @@ jobs:
         cd tmp
         $CODEQL database create --language=cpp /home/runner/work/_temp/codeql-write-db -c "make -B"
 
-    # - name: Build and use the cache
-    #   env:
-    #     CODEQL_CPP_TRAP_CACHING: true
-    #     CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE: true
-    #     CODEQL_EXTRACTOR_CPP_TRAP_CACHING: true
-    #     CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE: false
-    #     CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR: /home/runner/work/_temp/cpp_trap_cache
-    #     CODEQL: ${{ steps.codeql-action.outputs.codeql-path }}
-    #   run: |
-    #     cd tmp
-    #     $CODEQL database trace-command /home/runner/work/_temp/codeql_databases1/cpp make -B
+    - name: Set env var for cache read
+      run: |
+        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
   
-    - name: Try just using the cache
+    # This doesn't produce any output files
+    - name: Build and use the cache
+      env:
+        CODEQL_CPP_TRAP_CACHING: true
+        CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE: true
+        CODEQL_EXTRACTOR_CPP_TRAP_CACHING: true
+        CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE: false
+        CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR: /home/runner/work/_temp/cpp_trap_cache
+        CODEQL: ${{ steps.codeql-action.outputs.codeql-path }}
       run: |
         cd tmp
-        make -B
+        rm -rf /home/runner/work/_temp/codeql_databases1/cpp
+        $CODEQL database create -l cpp -c "make -B" /home/runner/work/_temp/codeql_databases1/cpp
+        # Was: $CODEQL database trace-command /home/runner/work/_temp/codeql_databases1/cpp make -B
+  
+    # This works but just gets TRAP cache misses
+    # - name: Try just using the cache
+    #  run: |
+    #    cd tmp
+    #    make -B
 
     # - name: Run the traced build
     #   env:
