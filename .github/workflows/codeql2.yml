@@ -27,34 +27,25 @@ jobs:
 
     steps:
     - name: Checkout first revision
-      uses: actions/checkout@v3
-      # with:
-      #  ref: 321ea883b7190d4e85cae5512a12e5eaa8f8731f
-
-    # This is needed for the "regular" CodeQL build
-    - name: Set env vars
-      run: |
-        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=true" >> $GITHUB_ENV
-        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR=/home/runner/work/_temp/cpp_trap_cache" >> $GITHUB_ENV
-        echo "CODEQL_EXTRACTOR_CPP_TRAP_CACHING=true" >> $GITHUB_ENV
-        echo "CODEQL_CPP_TRAP_CACHING=true" >> $GITHUB_ENV
-        echo "CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE=true" >> $GITHUB_ENV
-
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: actions/checkout@v4
       with:
-        languages: cpp
-        db-location: '/home/runner/work/_temp/codeql_databases1/'
-        debug: true
-        trap-caching: true
-      id: codeql-action
+        ref: a637b6cca53879ca2656a973208c2928fc561104
 
     - name: Initialize CMake
       run: |
         mkdir tmp
         cd tmp
         cmake ..
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: cpp
+        db-location: '/home/runner/work/_temp/codeql_databases1/'
+        debug: true
+        trap-caching: true
+      id: codeql-action
 
     - name: Build and populate the cache
       env:
@@ -67,12 +58,18 @@ jobs:
       run: |
         cd tmp
         $CODEQL database create --language=cpp /home/runner/work/_temp/codeql-write-db -c "make -B"
-
-    - name: Set env var for cache read
-      run: |
-        echo "CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE=false" >> $GITHUB_ENV
   
-    # This doesn't produce any output files
+    - name: Checkout second revision
+      uses: actions/checkout@v4
+      with:
+        ref: aa2e7c056bd02a59aac36d444944753eeb4751d9
+
+    - name: Initialize CMake for second revision
+      run: |
+        mkdir tmp
+        cd tmp
+        cmake ..
+
     - name: Build and use the cache
       env:
         CODEQL_CPP_TRAP_CACHING: true
@@ -85,31 +82,7 @@ jobs:
         cd tmp
         rm -rf /home/runner/work/_temp/codeql_databases1/cpp
         $CODEQL database create -l cpp -c "make -B" /home/runner/work/_temp/codeql_databases1/cpp
-        # Was: $CODEQL database trace-command /home/runner/work/_temp/codeql_databases1/cpp make -B
   
-    # This works but just gets TRAP cache misses
-    # - name: Try just using the cache
-    #  run: |
-    #    cd tmp
-    #    make -B
-
-    # - name: Run the traced build
-    #   env:
-    #    CODEQL_CPP_TRAP_CACHING: true
-    #    CODEQL_EXPERIMENTAL_CPP_TRAP_CACHE: true
-    #     CODEQL_EXTRACTOR_CPP_TRAP_CACHING: true
-    #     CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_WRITE: false
-    #     CODEQL_EXTRACTOR_CPP_OPTION_TRAP_CACHE_DIR: /home/runner/work/_temp/cpp_trap_cache
-    #     CODEQL: ${{ steps.codeql-action.outputs.codeql-path }}
-    #   run: |
-    #     mkdir tmp
-    #     cd tmp
-    #     cmake ..
-    #     make
-
-    # - name: Autobuild (read cache)
-    #  uses: github/codeql-action/autobuild@v2
-
     # Run the queries
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
